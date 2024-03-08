@@ -4,18 +4,16 @@ import { HiCog, HiLogout, HiViewGrid } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "flowbite-react";
-import useAuthentication from "../hooks/useAuthentication";
-
-// import { useSelector } from "react-redux";
+import { auth } from "../config/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 export const Header = () => {
+  const user = auth.currentUser;
+  console.log("Header -> user", user);
   const navigate = useNavigate();
-  // const user = useSelector((state) => state.user);
-  // console.log(user);
-  const { signOutCall } = useAuthentication();
-  const signOut = async () => {
+  const { signOutCall } = useAuth();
+  const handleSignOut = async () => {
     await signOutCall();
-    navigate("/auth/login");
   };
 
   return (
@@ -26,17 +24,22 @@ export const Header = () => {
       <div className="mr-4">
         <Dropdown label="Profile Settings">
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{user.displayName}</span>
             <span className="block truncate text-sm font-medium">
-              bonnie@flowbite.com
+              {user.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item icon={HiViewGrid}>
             <Link to="/">Dashboard</Link>
           </Dropdown.Item>
-          <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
+          <Dropdown.Item icon={HiCog}>
+            <Link to={"/profile"}>Settings</Link>
+          </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item icon={HiLogout} onClick={signOut}>
+          <Dropdown.Item
+            icon={HiLogout}
+            onClick={() => handleSignOut(navigate("/login"))}
+          >
             Sign out
           </Dropdown.Item>
         </Dropdown>

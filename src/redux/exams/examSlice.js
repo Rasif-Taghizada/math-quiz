@@ -18,13 +18,11 @@ export const addExamToFirestore = createAsyncThunk(
 
 export const fetchExams = createAsyncThunk("exams/fetchExams", async () => {
   const querySnapshot = await getDocs(collection(db, "exams"));
-  console.log("fecthExams", querySnapshot);
   const exams = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
   console.log("fecthExams", exams);
-  console.log(exams);
   return exams;
 });
 
@@ -41,7 +39,6 @@ const examsSlice = createSlice({
         state.examsArray.push(action.payload);
       })
       .addCase(fetchExams.fulfilled, (state, action) => {
-        console.log("addcase isledi", action.payload);
         state.examsArray = action.payload;
       });
   },

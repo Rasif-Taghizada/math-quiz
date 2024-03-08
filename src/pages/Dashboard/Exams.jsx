@@ -1,7 +1,9 @@
 import { Dropdown } from "flowbite-react";
 import { ExamCard } from "../../components/ExamCard";
+import { useSelector } from "react-redux";
 
 export const Exams = () => {
+  const exams = useSelector((state) => state.exams.examsArray);
   return (
     <div className="">
       <h1>Exams</h1>
@@ -60,14 +62,17 @@ export const Exams = () => {
         </div>
       </div>
       {/*! Active Exams */}
-      <div className="flex flex-col gap-y-4 mt-8 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 min-h-[300px] max-h-[500px]">
-        <ExamCard
-          questionsCount={25}
-          time={"60 dəqiqə"}
-          author={"Filankəs Filankəsov"}
-          price={"Pulsuz"}
-          title={"9-cu sinif buraxılış"}
-        />
+      <div className="flex flex-wrap justify-between gap-4 mt-8 p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 min-[300px] ">
+        {exams.map((exam) => (
+          <ExamCard
+            key={exam.id}
+            questionsCount={exam?.questionsCount}
+            time={exam?.time}
+            author={exam?.author}
+            price={exam?.price}
+            title={exam?.title}
+          />
+        ))}
       </div>
     </div>
   );

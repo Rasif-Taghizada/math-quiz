@@ -1,17 +1,12 @@
-import { addExamToFirestore, fetchExams } from "../../redux/exams/examSlice";
-import { useEffect, useState } from "react";
-
+import { addExamToFirestore } from "../../redux/exams/examSlice";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 export const About = () => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState(null);
   const [price, setPrice] = useState(null);
   const [sinif, setSinif] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchExams());
-  }, [dispatch]);
   const handleExamSubmit = (e) => {
     e.preventDefault();
     let examData = {

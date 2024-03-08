@@ -24,9 +24,9 @@ export const DashboardLayout = () => {
           </li>
         </ul>
       </div>
-      <div className=" col-start-2 col-end-7 bg-[#f5f5f5] h-full w-full overflow-y-auto shadow-md shadow[rgba(0, 0, 0, 0.15)]">
+      <div className=" col-start-2 col-end-7 bg-[#f5f5f5] shadow-md shadow[rgba(0, 0, 0, 0.15)]">
         <Header />
-        <div className="p-5 h-full w-full overflow-y-auto shadow-md shadow[rgba(0, 0, 0, 0.15)]">
+        <div className="p-5">
           <Outlet />
         </div>
       </div>

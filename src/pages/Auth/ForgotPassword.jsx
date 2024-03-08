@@ -1,21 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import useAuthentication from "../../hooks/useAuthentication";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
 export const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
-  console.log("ForgotPassword");
-  const { forgotPassword } = useAuthentication();
   const navigate = useNavigate();
-
+  const { resetPassword } = useAuth();
+  const resetPass = resetPassword();
   const handleResetPassword = async (event) => {
     event.preventDefault();
     setLoading(true);
     const email = event.target.email.value;
-    console.log("email", email);
-    await forgotPassword(email);
-    navigate("/auth/login");
+    await resetPass(email);
+    navigate("/login");
     setLoading(false);
   };
 
@@ -35,7 +33,7 @@ export const ForgotPassword = () => {
       </div>
       <div>
         Already have an account?{" "}
-        <Link to="/auth/login" className="text-blue-400">
+        <Link to="/login" className="text-blue-400">
           Login
         </Link>
       </div>

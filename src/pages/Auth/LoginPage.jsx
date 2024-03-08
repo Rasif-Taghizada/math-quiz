@@ -1,24 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import useAuthentication from "../../hooks/useAuthentication";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const { signInCall, signWithGoogle } = useAuthentication();
   const navigate = useNavigate();
+  const { signIn, signWithGoogle } = useAuth();
 
-  const signUp = async (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
     setLoading(true);
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log("email", email);
-    console.log("password ", password);
-    const user = await signInCall({ email, password });
+    const user = await signIn({ email, password });
     if (user) {
-      // redirect to dashboard
-      navigate("/");
+      console.log("user login var", user);
+      navigate("/", { replace: true });
     }
     setLoading(false);
   };
@@ -26,7 +24,7 @@ export const LoginPage = () => {
   return (
     <form
       className="w-1/2 h-full mx-auto mt-20 p-4 bg-white rounded-md shadow-md"
-      onSubmit={signUp}
+      onSubmit={handleSignIn}
     >
       <h1 className="text-2xl font-bold text-center">Login</h1>
       <div>
@@ -48,13 +46,13 @@ export const LoginPage = () => {
         />
       </div>
       <div className="d-flex">
-        <Link to="/auth/register">
+        <Link to="/register">
           Don&apos;t have an account?{" "}
           <span className="text-blue-400">Register</span>
         </Link>
       </div>
       <div className="d-flex">
-        <Link to="/auth/forgot-password">
+        <Link to="/forgot-password">
           Forgot Password? <span className="text-blue-400">Reset</span>
         </Link>
       </div>

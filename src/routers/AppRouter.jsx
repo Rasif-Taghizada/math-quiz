@@ -7,29 +7,30 @@ import {
   Home,
   LoginPage,
   OnlineVideos,
+  Profile,
   Register,
 } from "../pages";
-import { Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import { AuthLayout } from "../layouts";
-import PrivateRoute from "./PrivateRoute";
-import { BrowserRouter as Router } from "react-router-dom";
+import { DashboardLayout } from "../layouts";
+import { useSelector } from "react-redux";
 
 const AppRouter = () => {
+  const user = useSelector((state) => state.user);
+  console.log("AppRouter", user);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PrivateRoute />}>
+        <Route element={<DashboardLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/exams" element={<Exams />} />
           <Route path="/online-videos" element={<OnlineVideos />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-        </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>
   );

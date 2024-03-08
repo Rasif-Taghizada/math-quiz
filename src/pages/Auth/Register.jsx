@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import useAuthentication from "../../hooks/useAuthentication";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
 export const Register = () => {
   const [loading, setLoading] = useState(false);
-  const { signUpCall } = useAuthentication();
+  const { signUp: singUpCall } = useAuth();
   const navigate = useNavigate();
   const signUp = async (event) => {
     event.preventDefault();
@@ -14,9 +14,8 @@ export const Register = () => {
     const password = event.target.password.value;
     console.log("email", email);
     console.log("password", password);
-    const user = await signUpCall({ email, password });
+    const user = await singUpCall({ email, password });
     if (user) {
-      // redirect to dashboard
       navigate("/");
     }
     setLoading(false);
@@ -69,7 +68,7 @@ export const Register = () => {
         </div>
         <div>
           Already have an account?{" "}
-          <Link to="/auth/login" className="text-blue-400">
+          <Link to="/login" className="text-blue-400">
             Login
           </Link>
         </div>

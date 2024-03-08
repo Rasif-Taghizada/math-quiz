@@ -27,7 +27,7 @@ export const ExamCard = (props) => {
           {props.questionsCount} sual
         </span>
         <span className="text-sm text-gray-600 text-red-500 dark:text-gray-400 dark:text-red-400 font-bold	">
-          {props.price}
+          {props.price} AZN
         </span>
       </div>
       <div className="flex items-center justify-between gap-x-4">
@@ -56,6 +56,6 @@ ExamCard.propTypes = {
   questionsCount: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
