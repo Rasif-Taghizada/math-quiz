@@ -11,11 +11,12 @@ export const LoginPage = () => {
   const handleSignIn = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     const email = event.target.email.value;
     const password = event.target.password.value;
+
     const user = await signIn({ email, password });
     if (user) {
-      console.log("user login var", user);
       navigate("/", { replace: true });
     }
     setLoading(false);

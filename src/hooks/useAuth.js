@@ -150,6 +150,7 @@ export const useAuth = () => {
 
   const uploadImage = async (file) => {
     try {
+      if (typeof file === "string" || file === null) return;
       const storageRef = ref(storage, `users/${auth.currentUser.uid}`);
       console.log("storageRef", storageRef);
       await uploadBytes(storageRef, file);

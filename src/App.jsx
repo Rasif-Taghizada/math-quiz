@@ -4,7 +4,6 @@ import { store } from "./redux/store";
 import { useEffect } from "react";
 
 function App() {
-  console.log("App");
   useEffect(() => {
     if (store.getState().user.email) {
       store.dispatch(fetchExams());

@@ -2,6 +2,7 @@ import { Button, Card } from "flowbite-react";
 
 import { FaCircleUser } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const ExamCard = (props) => {
@@ -33,19 +34,25 @@ export const ExamCard = (props) => {
       <div className="flex items-center justify-between gap-x-4">
         <Button size={"sm"}>Testə başla</Button>
         <Button outline size={"sm"}>
-          Read more
-          <svg
-            className="-mr-1 ml-2 h-4 w-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+          <Link
+            to={`/exams/:${props.data.id}`}
+            className="flex items-center"
+            state={{ data: props.data }}
           >
-            <path
-              fillRule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
+            Read more
+            <svg
+              className="-mr-1 ml-2 h-4 w-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </Link>
         </Button>
       </div>
     </Card>
@@ -58,4 +65,5 @@ ExamCard.propTypes = {
   author: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
 };

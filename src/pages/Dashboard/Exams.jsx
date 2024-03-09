@@ -71,6 +71,7 @@ export const Exams = () => {
             author={exam?.author}
             price={exam?.price}
             title={exam?.title}
+            data={exam}
           />
         ))}
       </div>

@@ -8,10 +8,12 @@ import { auth } from "../config/firebase";
 import { useAuth } from "../hooks/useAuth";
 
 export const Header = () => {
-  const user = auth.currentUser;
-  console.log("Header -> user", user);
   const navigate = useNavigate();
   const { signOutCall } = useAuth();
+
+  const user = auth?.currentUser;
+  console.log("Header -> user", user);
+
   const handleSignOut = async () => {
     await signOutCall();
   };
@@ -22,18 +24,24 @@ export const Header = () => {
         <h1></h1>
       </div>
       <div className="mr-4">
-        <Dropdown label="Profile Settings">
+        <Dropdown
+          label={user.displayName ? user.displayName : "Profile Settings"}
+        >
           <Dropdown.Header>
-            <span className="block text-sm">{user.displayName}</span>
+            <span className="block text-sm">{user?.displayName}</span>
             <span className="block truncate text-sm font-medium">
               {user.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item icon={HiViewGrid}>
-            <Link to="/">Dashboard</Link>
+            <Link className="w-full inline-block text-left" to="/">
+              Dashboard
+            </Link>
           </Dropdown.Item>
           <Dropdown.Item icon={HiCog}>
-            <Link to={"/profile"}>Settings</Link>
+            <Link className="w-full inline-block text-left" to={"/profile"}>
+              Settings
+            </Link>
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item

@@ -1,18 +1,20 @@
+import { useRef, useState } from "react";
+
 import { auth } from "../../config/firebase";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
-import { useState } from "react";
 
 export const Profile = () => {
   const [userData, setUserData] = useState({
-    displayName: "",
-    email: "",
+    displayName: "" || auth.currentUser.displayName,
+    email: "" || auth.currentUser.email,
     password: "",
     confirmPassword: "",
     address: "",
     phone: "",
   });
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(auth.currentUser.photoURL || null);
+  const imageRef = useRef(null);
   const {
     updateProfileCall,
     uploadImage,
@@ -50,13 +52,15 @@ export const Profile = () => {
           </h2>
           <div className="grid grid-cols-2 gap-2 mt-4 w-sm">
             <img
+              ref={imageRef}
               src={
                 auth.currentUser.photoURL
                   ? auth.currentUser.photoURL
                   : "/blank_profile.jpeg"
               }
               alt="user"
-              className="col-start-1 col-end-2 row-start-1 row-end-3 w-20 h-15 rounded-full object-cover border-2 border-blue-600"
+              className="
+               col-start-1 col-end-2 row-start-1 row-end-3 rounded-full object-cover border-2 border-blue-600 h-20 w-20"
             />
             <label
               htmlFor="profile-picture"
@@ -67,7 +71,10 @@ export const Profile = () => {
                 id="profile-picture"
                 type="file"
                 className="hidden"
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  imageRef.current.src = URL.createObjectURL(e.target.files[0]);
+                }}
               />
             </label>
             <button
@@ -84,7 +91,11 @@ export const Profile = () => {
         </div>
         <div>
           <button
-            className="w-full bg-green-600 text-white rounded-md p-2"
+            className={
+              auth.currentUser.emailVerified
+                ? "hidden"
+                : "bg-green-600 text-white rounded-md p-2"
+            }
             onClick={() => {
               verifyEmail(auth.currentUser.email);
             }}
@@ -124,7 +135,7 @@ export const Profile = () => {
             className="w-full bg-blue-600 text-white rounded-md p-2"
             onClick={handleUpdateProfile}
           >
-            Save
+            Save Profile Picture and Details
           </button>
         </div>
       </div>
