@@ -7,6 +7,7 @@ export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn, signWithGoogle } = useAuth();
+  let role = "user";
 
   const handleSignIn = async (event) => {
     event.preventDefault();
@@ -14,10 +15,16 @@ export const LoginPage = () => {
 
     const email = event.target.email.value;
     const password = event.target.password.value;
-
-    const user = await signIn({ email, password });
+    if (email === "admin@gmail.com" && password === "admin123") role = "admin";
+    const user = await signIn({ email, password, role });
     if (user) {
-      navigate("/", { replace: true });
+      if (role === "admin") {
+        navigate("/admin");
+        localStorage.setItem("role", "admin");
+      } else {
+        navigate("/");
+        localStorage.setItem("role", "user");
+      }
     }
     setLoading(false);
   };
@@ -47,13 +54,13 @@ export const LoginPage = () => {
         />
       </div>
       <div className="d-flex">
-        <Link to="/register">
+        <Link to="/auth/register">
           Don&apos;t have an account?{" "}
           <span className="text-blue-400">Register</span>
         </Link>
       </div>
       <div className="d-flex">
-        <Link to="/forgot-password">
+        <Link to="/auth/forgot-password">
           Forgot Password? <span className="text-blue-400">Reset</span>
         </Link>
       </div>

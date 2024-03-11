@@ -4,6 +4,8 @@ export * from "./Dashboard/Home";
 export * from "./Dashboard/OnlineVideos";
 export * from "./Dashboard/Profile";
 export * from "./Dashboard/ExamAbout";
+export * from "./Dashboard/ScoreBoard";
 export * from "./Auth/LoginPage";
 export * from "./Auth/Register";
 export * from "./Auth/ForgotPassword";
+export * from "./Main/ExamStart";

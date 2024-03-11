@@ -6,14 +6,14 @@ import { useAuth } from "../../hooks/useAuth";
 
 export const Profile = () => {
   const [userData, setUserData] = useState({
-    displayName: "" || auth.currentUser.displayName,
-    email: "" || auth.currentUser.email,
+    displayName: "" || auth?.currentUser?.displayName,
+    email: "" || auth?.currentUser?.email,
     password: "",
     confirmPassword: "",
     address: "",
     phone: "",
   });
-  const [image, setImage] = useState(auth.currentUser.photoURL || null);
+  const [image, setImage] = useState(auth?.currentUser?.photoURL || null);
   const imageRef = useRef(null);
   const {
     updateProfileCall,
@@ -54,8 +54,8 @@ export const Profile = () => {
             <img
               ref={imageRef}
               src={
-                auth.currentUser.photoURL
-                  ? auth.currentUser.photoURL
+                auth?.currentUser?.photoURL
+                  ? auth?.currentUser?.photoURL
                   : "/blank_profile.jpeg"
               }
               alt="user"
@@ -92,7 +92,7 @@ export const Profile = () => {
         <div>
           <button
             className={
-              auth.currentUser.emailVerified
+              auth?.currentUser?.emailVerified
                 ? "hidden"
                 : "bg-green-600 text-white rounded-md p-2"
             }

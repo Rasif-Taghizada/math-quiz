@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import App from "./App.jsx";
 import { Provider } from "react-redux";
+import { Spinner } from "flowbite-react";
 import { ToastContainer } from "react-toastify";
 import { auth } from "./config/firebase.js";
 import { createRoot } from "react-dom/client";
@@ -28,7 +29,11 @@ const result = (
   </Provider>
 );
 
-root.render(<p>Loading...</p>);
+root.render(
+  <div className="load">
+    <Spinner aria-label="Extra large spinner example" size="xl" />
+  </div>
+);
 
 onAuthStateChanged(auth, (user) => {
   if (user) {

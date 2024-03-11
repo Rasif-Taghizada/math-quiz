@@ -22,7 +22,6 @@ export const fetchExams = createAsyncThunk("exams/fetchExams", async () => {
     id: doc.id,
     ...doc.data(),
   }));
-  console.log("fecthExams", exams);
   return exams;
 });
 
@@ -35,7 +34,6 @@ const examsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addExamToFirestore.fulfilled, (state, action) => {
-        console.log("actionPayload", action.payload);
         state.examsArray.push(action.payload);
       })
       .addCase(fetchExams.fulfilled, (state, action) => {

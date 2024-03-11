@@ -13,7 +13,7 @@ export const ForgotPassword = () => {
     setLoading(true);
     const email = event.target.email.value;
     await resetPass(email);
-    navigate("/login");
+    navigate("/auth/login");
     setLoading(false);
   };
 
@@ -33,7 +33,7 @@ export const ForgotPassword = () => {
       </div>
       <div>
         Already have an account?{" "}
-        <Link to="/login" className="text-blue-400">
+        <Link to="/auth/login" className="text-blue-400">
           Login
         </Link>
       </div>

@@ -32,10 +32,20 @@ export const ExamCard = (props) => {
         </span>
       </div>
       <div className="flex items-center justify-between gap-x-4">
-        <Button size={"sm"}>Testə başla</Button>
+        <div>
+          {" "}
+          <Link
+            to={`/preview/${props.data.id}`}
+            state={{ examData: props.data }}
+            className="bg-[#155E75] text-white rounded-md p-2 mt-5 hover:bg-[#2f73a0] transition-all duration-300 ease-in-out text-center cursor-pointer
+        "
+          >
+            Testə başla
+          </Link>
+        </div>
         <Button outline size={"sm"}>
           <Link
-            to={`/exams/:${props.data.id}`}
+            to={`/exams/${props.data.id}`}
             className="flex items-center"
             state={{ data: props.data }}
           >

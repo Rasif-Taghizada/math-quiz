@@ -3,15 +3,15 @@ import { NavLink, Outlet } from "react-router-dom";
 import { BsCollectionPlayFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiGraduateCap } from "react-icons/gi";
-import { Header } from "../../components/Header";
+import { Header } from "../../components";
 import { IoHome } from "react-icons/io5";
 import { LuBarChart3 } from "react-icons/lu";
 import { MdOutlineContactPage } from "react-icons/md";
 
 export const DashboardLayout = () => {
   return (
-    <div className="grid grid-rows-1 md:grid-cols-6 h-screen bg-[#fff]">
-      <div className="col-start-1 col-end-2 p-5 bg-[#fff] h-full w-full shadow-2xl overflow-y-auto border-r-2 border-zinc-500 border-opacity-50">
+    <div className="flex min-h-screen">
+      <div className="p-3 w-[210px] fixed max-w-[210px] h-full bg-white z-10 shadow-lg">
         <h1 className="text-3xl font-bold mb-5 cursor-pointer transition duration-300 text-[#675AF0] ease-in-out hover:scale-110 transform">
           MathQuiz
         </h1>
@@ -31,7 +31,7 @@ export const DashboardLayout = () => {
               Home
             </NavLink>
           </li>
-          <li>
+          <li className="whitespace-nowrap">
             <NavLink
               to="/online-videos"
               className={({ isActive }) => {
@@ -108,7 +108,7 @@ export const DashboardLayout = () => {
           </li>
         </ul>
       </div>
-      <div className=" col-start-2 col-end-7 bg-[#f5f5f5] shadow-md shadow[rgba(0, 0, 0, 0.15)]">
+      <div className="bg-[#f5f5f5] w-full ml-[210px]">
         <Header />
         <div className="p-5">
           <Outlet />

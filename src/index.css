@@ -10,3 +10,16 @@
 body {
     background-color: #f7f7f7;
 }
+
+.load {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.load>span>svg {
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+}

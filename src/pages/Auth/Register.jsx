@@ -68,7 +68,7 @@ export const Register = () => {
         </div>
         <div>
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-400">
+          <Link to="/auth/login" className="text-blue-400">
             Login
           </Link>
         </div>

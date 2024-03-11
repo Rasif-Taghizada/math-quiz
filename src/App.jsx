@@ -1,5 +1,6 @@
-import AppRouter from "./routers/AppRouter";
+import { RouterProvider } from "react-router-dom";
 import { fetchExams } from "./redux/exams/examSlice";
+import { router } from "./routers/routes";
 import { store } from "./redux/store";
 import { useEffect } from "react";
 
@@ -9,7 +10,7 @@ function App() {
       store.dispatch(fetchExams());
     }
   }, []);
-  return <AppRouter />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
