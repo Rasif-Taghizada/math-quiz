@@ -9,3 +9,8 @@ export * from "./Auth/LoginPage";
 export * from "./Auth/Register";
 export * from "./Auth/ForgotPassword";
 export * from "./Main/ExamStart";
+export * from "./Admin/AdminDashboard";
+export * from "./Admin/AdminUsers";
+export * from "./Admin/AdminQuestions";
+export * from "./Admin/AdminSettings";
+export * from "./Admin/AdminExams";

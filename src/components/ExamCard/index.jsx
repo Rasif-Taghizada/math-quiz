@@ -8,12 +8,12 @@ import PropTypes from "prop-types";
 export const ExamCard = (props) => {
   return (
     <Card
-      className="max-w-[300px]"
+      className="max-w-[300px] hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
       imgAlt="Meaningful alt text for an image that is not purely decorative"
       imgSrc="/exam-card-image.svg"
     >
-      <h2 className="text-lg font-semibold">{props.title}</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+      <h2 className="text-lg font-bold">{props.title}</h2>
+      <p className="text-md text-gray-600 dark:text-gray-400 flex items-center gap-2 font-medium">
         <FaCircleUser className="text-gray-500 dark:text-gray-400" />
         {props.author}
       </p>

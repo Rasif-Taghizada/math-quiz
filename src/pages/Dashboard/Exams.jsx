@@ -62,7 +62,7 @@ export const Exams = () => {
         </div>
       </div>
       {/*! Active Exams */}
-      <div className="flex flex-wrap justify-between gap-4 mt-8 p-4 bg-white dark:bg-gray-800 min-[300px] ">
+      <div className="flex flex-wrap gap-4 mt-8 p-4 bg-white dark:bg-gray-800">
         {exams.map((exam) => (
           <ExamCard
             key={exam.id}

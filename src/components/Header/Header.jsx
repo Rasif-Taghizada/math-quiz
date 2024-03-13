@@ -14,6 +14,8 @@ export const Header = () => {
   const user = auth?.currentUser;
   const handleSignOut = async () => {
     await signOutCall();
+    navigate("/auth/login");
+    localStorage.removeItem("role");
   };
 
   return (
@@ -42,10 +44,7 @@ export const Header = () => {
             </Link>
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item
-            icon={HiLogout}
-            onClick={() => handleSignOut(navigate("/auth/login"))}
-          >
+          <Dropdown.Item icon={HiLogout} onClick={() => handleSignOut()}>
             Sign out
           </Dropdown.Item>
         </Dropdown>

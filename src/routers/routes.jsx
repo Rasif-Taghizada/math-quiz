@@ -1,5 +1,10 @@
 import {
   About,
+  AdminDashboard,
+  AdminExams,
+  AdminQuestions,
+  AdminSettings,
+  AdminUsers,
   ExamAbout,
   ExamStart,
   Exams,
@@ -11,7 +16,12 @@ import {
   Register,
   ScoreBoard,
 } from "../pages";
-import { AuthLayout, DashboardLayout, ExamLayout } from "../layouts";
+import {
+  AdminLayout,
+  AuthLayout,
+  DashboardLayout,
+  ExamLayout,
+} from "../layouts";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 
 import { ErrorBoundry } from "../components";
@@ -55,9 +65,17 @@ export const router = createBrowserRouter([
     path: "admin",
     element: (
       <ProtectedRoutes expectedRole="admin" redirectPath="/auth/login">
-        <h1>Admin Layout</h1>
+        <AdminLayout />
       </ProtectedRoutes>
     ),
+    children: [
+      { index: true, path: "dashboard", element: <AdminDashboard /> },
+      { path: "users", element: <AdminUsers /> },
+      { path: "exams", element: <AdminExams /> },
+      { path: "exams/create", element: <AdminQuestions /> },
+      { path: "exams/:id/edit", element: <AdminQuestions /> },
+      { path: "settings", element: <AdminSettings /> },
+    ],
   },
   {
     path: "preview",
