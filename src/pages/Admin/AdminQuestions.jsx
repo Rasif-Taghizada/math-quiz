@@ -97,23 +97,23 @@ export const AdminQuestions = () => {
           </div>
           {/* questions content */}
           <div>
-            {question.options.map((option, optionIndex) => (
+            {question.options.map((option) => (
               <div
                 className="flex gap-3 items-center mb-[10px]"
                 key={option.id}
               >
                 <input
                   type={question.questionType}
-                  name="field1"
-                  defaultChecked={option.correctIndex === optionIndex}
+                  name={`question-${qIndex}`}
+                  defaultChecked={question.correctID === option.id}
                   className="cursor-pointer"
-                  onClick={() => correctAnswer(optionIndex, qIndex)}
+                  onClick={() => correctAnswer(option.id, question.id)}
                 />
                 <input
                   type="text"
                   defaultValue={option.title}
                   onChange={(e) =>
-                    changeOptionValue(e.target.value, optionIndex, qIndex)
+                    changeOptionValue(e.target.value, option.id, question.id)
                   }
                   className="flex-1 border-none rounded-tl-md rounded-tr-md hover:bg-gray-100 hover:border-b-2"
                 />
@@ -554,7 +554,7 @@ export const AdminQuestions = () => {
         </div>
         <div className="ml-auto">
           <button
-            className="bg-[#675AF0] text-white px-5 py-2 rounded-md"
+            className="bg-[#675AF0] text-white px-5 py-2 rounded-md whitespace-nowrap hover:bg-[#7E6CFA] transition-all duration-300 ease-in-out"
             onClick={() => {
               saveExam();
             }}

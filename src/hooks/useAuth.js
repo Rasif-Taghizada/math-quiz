@@ -10,14 +10,29 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
+import {
+  addStudent,
+  addStudentToFirestore,
+  fetchStudents,
+  updateStudentInFirestore,
+} from "../redux/students/studentSlice";
 import { auth, storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { removeUser, saveUser } from "../redux/auth/authSlice";
 
+import { fetchExams } from "../redux/exams/examSlice";
 import { store } from "../redux/store";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export const useAuth = () => {
+  useEffect(() => {
+    if (store.getState().user.email) {
+      store.dispatch(fetchExams());
+      store.dispatch(fetchStudents());
+    }
+  }, []);
+
   const signIn = async (user) => {
     try {
       const { email, password } = user;
@@ -56,6 +71,14 @@ export const useAuth = () => {
           token: userCredential.user.refreshToken,
         })
       );
+      if (email !== "admin@gmail.com" && password !== "admin123") {
+        store.dispatch(
+          addStudentToFirestore({
+            email: email,
+            token: userCredential.user.refreshToken,
+          })
+        );
+      }
       toast.success("Sign up successful");
       return userCredential.user;
     } catch (error) {
@@ -75,6 +98,18 @@ export const useAuth = () => {
           token: userCredential.user.refreshToken,
         })
       );
+      if (
+        userCredential.user.email !== "admin@gmail.com" &&
+        userCredential.user.uid !== "admin123"
+      ) {
+        store.dispatch(
+          addStudent({
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+            photoURL: userCredential.user.photoURL,
+          })
+        );
+      }
       toast.success("Sign in with Google successful");
       return userCredential.user;
     } catch (error) {
@@ -109,12 +144,24 @@ export const useAuth = () => {
 
   const updateProfileCall = async (user) => {
     try {
+      //* update profile picture in storage
       const storageRef = ref(storage, `users/${auth.currentUser.uid}`);
       const userProfileURL = await getDownloadURL(storageRef);
+      //* set photoURL in auth
       await updateProfile(auth.currentUser, {
         displayName: user.displayName,
         photoURL: userProfileURL,
       });
+      //* update student in firestore
+      store.dispatch(
+        updateStudentInFirestore({
+          email: user.email,
+          displayName: user.displayName,
+          phone: user.phone,
+          photoURL: userProfileURL,
+          uid: auth.currentUser.uid,
+        })
+      );
       toast.success("Profile updated successfully");
     } catch (error) {
       toast.error(error.message);
@@ -152,7 +199,6 @@ export const useAuth = () => {
     try {
       if (typeof file === "string" || file === null) return;
       const storageRef = ref(storage, `users/${auth.currentUser.uid}`);
-      console.log("storageRef", storageRef);
       await uploadBytes(storageRef, file);
       toast.success("Image uploaded successfully");
     } catch (error) {

@@ -26,11 +26,13 @@ export const useExam = () => {
           ],
           open: true,
           point: 1,
-          correctIndex: 0,
+          correctID: null,
         },
       ],
     }
   );
+
+  console.log("examData", examData);
 
   const changeQuestion = (text, index) => {
     let newQuestions = [...examData.questions];
@@ -44,9 +46,21 @@ export const useExam = () => {
     setExamData({ ...examData, questions: newQuestions });
   };
 
-  const changeOptionValue = (optValue, optIndex, quesIndex) => {
-    let newQuestions = [...examData.questions];
-    newQuestions[quesIndex].options[optIndex].title = optValue;
+  const changeOptionValue = (optValue, optID, questionID) => {
+    let newQuestions = examData.questions.map((question) => {
+      if (question.id === questionID) {
+        return {
+          ...question,
+          options: question.options.map((option) => {
+            if (option.id === optID) {
+              return { ...option, title: optValue };
+            }
+            return option;
+          }),
+        };
+      }
+      return question;
+    });
     setExamData({ ...examData, questions: newQuestions });
   };
 
@@ -103,9 +117,13 @@ export const useExam = () => {
     setExamData({ ...examData, questions: newQuestions });
   };
 
-  const correctAnswer = (index, quesIndex) => {
-    let newQuestions = [...examData.questions];
-    newQuestions[quesIndex].correctIndex = index;
+  const correctAnswer = (optionID, questionID) => {
+    let newQuestions = examData.questions.map((question) => {
+      if (question.id === questionID) {
+        return { ...question, correctID: optionID };
+      }
+      return question;
+    });
     setExamData({ ...examData, questions: newQuestions });
   };
 
@@ -114,6 +132,7 @@ export const useExam = () => {
     newQuestions[quesIndex].point = point;
     setExamData({ ...examData, questions: newQuestions });
   };
+
   return {
     isEdited,
     examData,

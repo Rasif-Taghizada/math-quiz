@@ -38,10 +38,14 @@ export const Profile = () => {
   };
 
   const handleUpdateProfile = async () => {
-    if (image === null) return;
-    console.log("image", image);
-    await uploadImage(image);
-    await updateProfileCall(userData);
+    try {
+      if (image) await uploadImage(image);
+      if (userData?.displayName || userData.phone)
+        await updateProfileCall(userData);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   return (
     <div className="flex flex-col w-full">
@@ -97,7 +101,7 @@ export const Profile = () => {
                 : "bg-green-600 text-white rounded-md p-2"
             }
             onClick={() => {
-              verifyEmail(auth.currentUser.email);
+              verifyEmail(auth?.currentUser?.email);
             }}
           >
             Verify Email
@@ -112,7 +116,7 @@ export const Profile = () => {
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md"
-              value={userData.displayName}
+              value={userData?.displayName}
               onChange={(e) =>
                 setUserData({ ...userData, displayName: e.target.value })
               }
@@ -123,7 +127,7 @@ export const Profile = () => {
             <input
               type="tel"
               className="w-full border border-gray-300 rounded-md p-2"
-              value={userData.phone}
+              value={userData?.phone}
               onChange={(e) =>
                 setUserData({ ...userData, phone: e.target.value })
               }
@@ -147,7 +151,7 @@ export const Profile = () => {
             <input
               type="password"
               className="w-full border border-gray-300 rounded-md p-2"
-              value={userData.password}
+              value={userData?.password}
               onChange={(e) =>
                 setUserData({ ...userData, password: e.target.value })
               }
@@ -158,7 +162,7 @@ export const Profile = () => {
             <input
               type="password"
               className="w-full border border-gray-300 rounded-md p-2"
-              value={userData.confirmPassword}
+              value={userData?.confirmPassword}
               onChange={(e) =>
                 setUserData({ ...userData, confirmPassword: e.target.value })
               }
@@ -182,7 +186,7 @@ export const Profile = () => {
             <input
               type="email"
               className="w-full border border-gray-300 rounded-md p-2"
-              value={userData.email}
+              value={userData?.email}
               onChange={(e) =>
                 setUserData({ ...userData, email: e.target.value })
               }
