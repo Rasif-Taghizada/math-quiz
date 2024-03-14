@@ -153,7 +153,7 @@ export const AdminQuestions = () => {
                 </button>
                 <button
                   className="hover:bg-gray-100 p-1 rounded-full"
-                  onClick={() => removeOption(optionIndex, qIndex)}
+                  onClick={() => removeOption(option.id, qIndex)}
                 >
                   <svg
                     width="40.000000"
@@ -194,7 +194,7 @@ export const AdminQuestions = () => {
                 <span className="text-[#30333D] font-medium">or </span>
                 <span
                   className="text-[#675AF0] font-bold cursor-pointer"
-                  onClick={() => addOption(qIndex)}
+                  onClick={() => addOption(question.id)}
                 >
                   add Other
                 </span>

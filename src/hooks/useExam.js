@@ -18,7 +18,12 @@ export const useExam = () => {
           id: uuidv4(),
           questionTitle: "Question Title",
           questionType: "radio",
-          options: [{ id: 1, title: "Option 1" }],
+          options: [
+            {
+              id: uuidv4().split("-")[0],
+              title: "Option 1",
+            },
+          ],
           open: true,
           point: 1,
           correctIndex: 0,
@@ -26,8 +31,6 @@ export const useExam = () => {
       ],
     }
   );
-
-  console.log("examData", examData);
 
   const changeQuestion = (text, index) => {
     let newQuestions = [...examData.questions];
@@ -47,33 +50,35 @@ export const useExam = () => {
     setExamData({ ...examData, questions: newQuestions });
   };
 
-  const removeOption = (optIndex, quesIndex) => {
+  const removeOption = (optionID, quesIndex) => {
     let newQuestions = [...examData.questions];
-    let newOptions = newQuestions[quesIndex].options.filter(
-      (option) => option.id !== optIndex
-    ); // remove option
-    console.log("newOptions", newOptions);
+    newQuestions[quesIndex].options = newQuestions[quesIndex].options.filter(
+      (option) => option.id !== optionID
+    );
     setExamData({ ...examData, questions: newQuestions });
   };
 
-  const addOption = (quesIndex) => {
-    let newQuestions = [...examData.questions];
-    newQuestions[quesIndex].options.push({
-      id: newQuestions[quesIndex].options.length + 1,
-      title: `Option ${newQuestions[quesIndex].options.length + 1}`,
+  const addOption = (questionID) => {
+    let newQuestions = examData.questions.map((question) => {
+      if (question.id === questionID) {
+        return {
+          ...question,
+          options: [
+            ...question.options,
+            { id: uuidv4().split("-")[0], title: "Option" },
+          ],
+        };
+      }
+      return question;
     });
     setExamData({ ...examData, questions: newQuestions });
   };
 
   const copyQuestion = (quesIndex) => {
     let newQuestions = [...examData.questions];
-    console.log("newQuestions", newQuestions[quesIndex]);
-    let copyQuestion = { ...newQuestions[quesIndex] };
-    console.log("copyQuestion", copyQuestion);
-    copyQuestion.id = uuidv4();
-    newQuestions.push(copyQuestion);
+    let copyQuestion = newQuestions[quesIndex];
+    newQuestions.push({ ...copyQuestion, id: uuidv4() });
     setExamData({ ...examData, questions: newQuestions });
-    console.log(editedExam);
   };
 
   const deleteQuestion = (quesIndex) => {
@@ -86,14 +91,13 @@ export const useExam = () => {
     let newQuestions = examData.questions.map((question) => {
       return { ...question, open: true };
     });
-    console.log("add more question field", newQuestions);
     newQuestions.push({
-      id: newQuestions.length + 1,
+      id: uuidv4(),
       questionTitle: "Question Title",
       questionType: "radio",
       correctIndex: 0,
       point: 1,
-      options: [{ id: 1, title: "Option 1" }],
+      options: [{ id: uuidv4().split("-")[0], title: "Option" }],
       open: true,
     });
     setExamData({ ...examData, questions: newQuestions });
