@@ -40,7 +40,7 @@ export const Profile = () => {
   const handleUpdateProfile = async () => {
     try {
       if (image) await uploadImage(image);
-      if (userData?.displayName || userData.phone)
+      if (userData?.displayName && userData.phone)
         await updateProfileCall(userData);
       toast.success("Profile updated successfully");
     } catch (error) {

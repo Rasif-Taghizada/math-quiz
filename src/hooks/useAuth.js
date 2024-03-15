@@ -11,7 +11,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {
-  addStudent,
   addStudentToFirestore,
   fetchStudents,
   updateStudentInFirestore,
@@ -27,11 +26,11 @@ import { useEffect } from "react";
 
 export const useAuth = () => {
   useEffect(() => {
-    if (store.getState().user.email) {
-      store.dispatch(fetchExams());
-      store.dispatch(fetchStudents());
-    }
-  }, []);
+    store.dispatch(fetchStudents());
+    store.dispatch(fetchExams());
+  }, [store.dispatch]);
+
+  const storageRef = ref(storage, `users/${auth?.currentUser?.uid}`);
 
   const signIn = async (user) => {
     try {
@@ -41,13 +40,22 @@ export const useAuth = () => {
         email,
         password
       );
+
+      // istifadəçi giriş etdikdə, onun fireStore-dakı İD-sini alıb, onu redux-da saxlayırıq
+      const students = store.getState().students.studentsArray;
+      const currentStudent = students.find(
+        (student) => student.email === email
+      );
+
       store.dispatch(
         saveUser({
           email: userCredential.user.email,
           uid: userCredential.user.uid,
           token: userCredential.user.refreshToken,
+          id: currentStudent?.id,
         })
       );
+
       toast.success("Sign in successful");
       return userCredential.user;
     } catch (error) {
@@ -64,6 +72,7 @@ export const useAuth = () => {
         email,
         password
       );
+
       store.dispatch(
         saveUser({
           email: userCredential.user.email,
@@ -89,21 +98,33 @@ export const useAuth = () => {
 
   const signWithGoogle = async () => {
     try {
+      //* sign in with google
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
+
+      //* get student from firestore
+      const students = store.getState().students.studentsArray;
+      //* find student by email
+      const currentStudent = students.find(
+        (student) => student.email === userCredential.user.email
+      );
+      //* save user to redux
       store.dispatch(
         saveUser({
           email: userCredential.user.email,
           uid: userCredential.user.uid,
           token: userCredential.user.refreshToken,
+          id: currentStudent?.id,
         })
       );
+
+      //* add student to firestore
       if (
         userCredential.user.email !== "admin@gmail.com" &&
         userCredential.user.uid !== "admin123"
       ) {
         store.dispatch(
-          addStudent({
+          addStudentToFirestore({
             email: userCredential.user.email,
             uid: userCredential.user.uid,
             photoURL: userCredential.user.photoURL,
@@ -145,8 +166,8 @@ export const useAuth = () => {
   const updateProfileCall = async (user) => {
     try {
       //* update profile picture in storage
-      const storageRef = ref(storage, `users/${auth.currentUser.uid}`);
       const userProfileURL = await getDownloadURL(storageRef);
+      console.log("userProfileURL", userProfileURL);
       //* set photoURL in auth
       await updateProfile(auth.currentUser, {
         displayName: user.displayName,
@@ -157,9 +178,9 @@ export const useAuth = () => {
         updateStudentInFirestore({
           email: user.email,
           displayName: user.displayName,
-          phone: user.phone,
+          phoneNumber: user.phone,
           photoURL: userProfileURL,
-          uid: auth.currentUser.uid,
+          id: store.getState().user.id,
         })
       );
       toast.success("Profile updated successfully");
@@ -198,7 +219,6 @@ export const useAuth = () => {
   const uploadImage = async (file) => {
     try {
       if (typeof file === "string" || file === null) return;
-      const storageRef = ref(storage, `users/${auth.currentUser.uid}`);
       await uploadBytes(storageRef, file);
       toast.success("Image uploaded successfully");
     } catch (error) {

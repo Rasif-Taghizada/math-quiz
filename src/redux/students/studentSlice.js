@@ -29,6 +29,7 @@ export const fetchStudents = createAsyncThunk(
       id: doc.id,
       ...doc.data(),
     }));
+    console.log("students", students);
     return students;
   }
 );

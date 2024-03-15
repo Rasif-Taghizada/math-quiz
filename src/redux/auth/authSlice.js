@@ -4,6 +4,7 @@ const initialState = {
   email: null,
   token: null,
   uid: null,
+  id: null,
 };
 
 export const authSlice = createSlice({
@@ -14,6 +15,7 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.token = action.payload.token;
       state.uid = action.payload.uid;
+      state.id = action.payload.id;
       // set user in local storage
       localStorage.setItem(
         "user",
@@ -21,6 +23,7 @@ export const authSlice = createSlice({
           email: action.payload.email,
           token: action.payload.token,
           uid: action.payload.uid,
+          id: action.payload.id,
         })
       );
     },
@@ -28,6 +31,7 @@ export const authSlice = createSlice({
       state.email = null;
       state.token = null;
       state.uid = null;
+      state.id = null;
       // remove user from local storage
       localStorage.removeItem("user");
     },

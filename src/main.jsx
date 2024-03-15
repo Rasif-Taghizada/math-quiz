@@ -35,14 +35,20 @@ root.render(
   </div>
 );
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     console.log("User is signed in");
+    //* find student by email
+    const students = store.getState().students.studentsArray;
+    const currentStudent = students.find(
+      (student) => student.email === user.email
+    );
     store.dispatch(
       saveUser({
         email: user.email,
         uid: user.uid,
         token: user.refreshToken,
+        id: currentStudent?.id,
       })
     );
   } else {
