@@ -1,9 +1,25 @@
 import { Dropdown } from "flowbite-react";
 import { ExamCard } from "../../components";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export const Exams = () => {
   const exams = useSelector((state) => state.exams.examsArray);
+
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedPrice, setSelectedPrice] = useState("");
+
+  const types = ["Blok", "Buraxılış", "Məntiq"];
+  const prices = [5, 10, 20];
+
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+  };
+
+  const handlePriceChange = (price) => {
+    setSelectedPrice(price);
+  };
+
   return (
     <div className="">
       <h1>Exams</h1>
@@ -49,15 +65,35 @@ export const Exams = () => {
           </div>
         </form>
         <div className="flex items-center gap-x-4">
-          <Dropdown label="Növ seçin">
-            <Dropdown.Item>Blok</Dropdown.Item>
-            <Dropdown.Item>Buraxılış</Dropdown.Item>
-            <Dropdown.Item>Məntiq</Dropdown.Item>
+          <Dropdown
+            label={selectedType !== "" ? selectedType : "Növ seçin"}
+            value={selectedType}
+          >
+            {types.map((type, index) => (
+              <Dropdown.Item
+                onClick={() => handleTypeChange(type)}
+                key={index}
+                value={type}
+              >
+                {type}
+              </Dropdown.Item>
+            ))}
           </Dropdown>
-          <Dropdown label="Qiymət seçin">
-            <Dropdown.Item>5</Dropdown.Item>
-            <Dropdown.Item>10</Dropdown.Item>
-            <Dropdown.Item>20</Dropdown.Item>
+          <Dropdown
+            label={
+              selectedPrice !== "" ? selectedPrice.toString() : "Qiymət seçin"
+            }
+            value={selectedPrice}
+          >
+            {prices.map((price, index) => (
+              <Dropdown.Item
+                onClick={() => handlePriceChange(price)}
+                key={index}
+                value={price}
+              >
+                {price}
+              </Dropdown.Item>
+            ))}
           </Dropdown>
         </div>
       </div>

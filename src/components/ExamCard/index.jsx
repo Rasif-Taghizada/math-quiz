@@ -6,6 +6,14 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const ExamCard = (props) => {
+  const timeToText = (time) => {
+    let hours = Math.floor(time / 60);
+    let minutes = time % 60;
+    if (hours === 0) return minutes + " dəqiqə";
+    if (minutes === 0) return hours + " saat";
+    return hours + " saat " + minutes + " dəqiqə";
+  };
+
   return (
     <Card
       className="max-w-[300px] hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
@@ -20,7 +28,7 @@ export const ExamCard = (props) => {
       <div className="flex items-center gap-x-2">
         <IoMdTime className="text-gray-500 dark:text-gray-400" />
         <span className="text-sm text-gray-600 dark:text-gray-400">
-          {props.time}
+          {timeToText(props.time)}
         </span>
       </div>
       <div className="flex items-center gap-x-2 justify-between">
@@ -37,8 +45,7 @@ export const ExamCard = (props) => {
           <Link
             to={`/preview/${props.data.id}`}
             state={{ examData: props.data }}
-            className="bg-[#155E75] text-white rounded-md p-2 mt-5 hover:bg-[#2f73a0] transition-all duration-300 ease-in-out text-center cursor-pointer
-        "
+            className="bg-[#155E75] text-white rounded-md p-2 mt-5 hover:bg-[#2f73a0] transition-all duration-300 ease-in-out text-center cursor-pointer"
           >
             Testə başla
           </Link>
@@ -71,7 +78,7 @@ export const ExamCard = (props) => {
 
 ExamCard.propTypes = {
   questionsCount: PropTypes.number.isRequired,
-  time: PropTypes.string.isRequired,
+  time: PropTypes.number.isRequired,
   author: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,

@@ -7,8 +7,18 @@ import { Header } from "../../components";
 import { IoHome } from "react-icons/io5";
 import { LuBarChart3 } from "react-icons/lu";
 import { MdOutlineContactPage } from "react-icons/md";
+import { fetchExams } from "../../redux/exams/examSlice";
+import { fetchStudents } from "../../redux/students/studentSlice";
+import { store } from "../../redux/store";
+import { useEffect } from "react";
 
 export const DashboardLayout = () => {
+  useEffect(() => {
+    document.title = "MathQuiz - Dashboard";
+    store.dispatch(fetchExams());
+    store.dispatch(fetchStudents());
+  }, []);
+
   return (
     <div className="flex min-h-screen">
       <div className="p-3 w-[210px] fixed max-w-[210px] h-full bg-white z-10 shadow-lg">

@@ -29,7 +29,6 @@ export const fetchStudents = createAsyncThunk(
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("students", students);
     return students;
   }
 );
@@ -49,7 +48,6 @@ export const updateStudentInFirestore = createAsyncThunk(
   async (student) => {
     const studentRef = doc(db, "students", student.id);
     await updateDoc(studentRef, student);
-    console.log(student);
     return student;
   }
 );

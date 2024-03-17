@@ -4,8 +4,18 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { TbMathSymbols } from "react-icons/tb";
+import { fetchExams } from "../../redux/exams/examSlice";
+import { fetchStudents } from "../../redux/students/studentSlice";
+import { store } from "../../redux/store";
+import { useEffect } from "react";
 
 export const AdminLayout = () => {
+  useEffect(() => {
+    document.title = "MathQuiz - Admin";
+    store.dispatch(fetchExams());
+    store.dispatch(fetchStudents());
+  }, []);
+
   return (
     <div className="flex">
       {/* sidebar */}

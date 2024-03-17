@@ -30,10 +30,7 @@ export const ExamLayout = () => {
           </Dropdown>
         </div>
       </div>
-      <main
-        className="bg-[#E2E2E2] p-[30px]"
-        style={{ height: "calc(100dvh - 66px)" }}
-      >
+      <main className="bg-[#E2E2E2] p-[30px]">
         <Outlet />
       </main>
     </>

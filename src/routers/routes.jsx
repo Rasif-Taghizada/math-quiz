@@ -14,6 +14,7 @@ import {
   OnlineVideos,
   Profile,
   Register,
+  ResultTable,
   ScoreBoard,
 } from "../pages";
 import {
@@ -25,6 +26,7 @@ import {
 import { Navigate, createBrowserRouter } from "react-router-dom";
 
 import { ErrorBoundry } from "../components";
+import { ExamQuestions } from "../pages/Main/ExamQuestions";
 import ProtectedRoutes from "../guard/ProtectedRoutes";
 
 export const router = createBrowserRouter([
@@ -87,7 +89,11 @@ export const router = createBrowserRouter([
       },
       {
         path: ":id/start",
-        element: <h1>Exam start</h1>,
+        element: <ExamQuestions />,
+      },
+      {
+        path: "result",
+        element: <ResultTable />,
       },
     ],
   },

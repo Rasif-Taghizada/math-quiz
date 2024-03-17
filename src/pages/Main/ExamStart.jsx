@@ -55,6 +55,7 @@ export const ExamStart = () => {
         </p>
         <Link
           to={`/preview/${examData.id}/start`}
+          state={{ examData }}
           className="bg-[#675AF0] text-white rounded-md p-2 mt-5 hover:bg-[#4C3D9B] transition-all duration-300 ease-in-out w-[220px] text-center cursor-pointer"
         >
           İmtahana başla

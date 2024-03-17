@@ -12,50 +12,27 @@ import {
 } from "firebase/auth";
 import {
   addStudentToFirestore,
-  fetchStudents,
   updateStudentInFirestore,
 } from "../redux/students/studentSlice";
 import { auth, storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { removeUser, saveUser } from "../redux/auth/authSlice";
 
-import { fetchExams } from "../redux/exams/examSlice";
 import { store } from "../redux/store";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 export const useAuth = () => {
-  useEffect(() => {
-    store.dispatch(fetchStudents());
-    store.dispatch(fetchExams());
-  }, [store.dispatch]);
-
   const storageRef = ref(storage, `users/${auth?.currentUser?.uid}`);
 
   const signIn = async (user) => {
     try {
+      //* sign in with email and password
       const { email, password } = user;
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-
-      // istifadəçi giriş etdikdə, onun fireStore-dakı İD-sini alıb, onu redux-da saxlayırıq
-      const students = store.getState().students.studentsArray;
-      const currentStudent = students.find(
-        (student) => student.email === email
-      );
-
-      store.dispatch(
-        saveUser({
-          email: userCredential.user.email,
-          uid: userCredential.user.uid,
-          token: userCredential.user.refreshToken,
-          id: currentStudent?.id,
-        })
-      );
-
       toast.success("Sign in successful");
       return userCredential.user;
     } catch (error) {
@@ -73,6 +50,26 @@ export const useAuth = () => {
         password
       );
 
+      if (email !== "admin@gmail.com" && password !== "admin123") {
+        store
+          .dispatch(
+            addStudentToFirestore({
+              email: email,
+              token: userCredential.user.refreshToken,
+            })
+          )
+          .then((result) => {
+            store.dispatch(
+              saveUser({
+                email: userCredential.user.email,
+                uid: userCredential.user.uid,
+                token: userCredential.user.refreshToken,
+                id: result.payload.id,
+              })
+            );
+          });
+      }
+
       store.dispatch(
         saveUser({
           email: userCredential.user.email,
@@ -80,14 +77,7 @@ export const useAuth = () => {
           token: userCredential.user.refreshToken,
         })
       );
-      if (email !== "admin@gmail.com" && password !== "admin123") {
-        store.dispatch(
-          addStudentToFirestore({
-            email: email,
-            token: userCredential.user.refreshToken,
-          })
-        );
-      }
+
       toast.success("Sign up successful");
       return userCredential.user;
     } catch (error) {
@@ -101,35 +91,28 @@ export const useAuth = () => {
       //* sign in with google
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
-
-      //* get student from firestore
-      const students = store.getState().students.studentsArray;
-      //* find student by email
-      const currentStudent = students.find(
-        (student) => student.email === userCredential.user.email
-      );
-      //* save user to redux
-      store.dispatch(
-        saveUser({
-          email: userCredential.user.email,
-          uid: userCredential.user.uid,
-          token: userCredential.user.refreshToken,
-          id: currentStudent?.id,
-        })
-      );
-
       //* add student to firestore
       if (
         userCredential.user.email !== "admin@gmail.com" &&
-        userCredential.user.uid !== "admin123"
+        userCredential.user.password !== "admin123"
       ) {
-        store.dispatch(
-          addStudentToFirestore({
-            email: userCredential.user.email,
-            uid: userCredential.user.uid,
-            photoURL: userCredential.user.photoURL,
-          })
-        );
+        store
+          .dispatch(
+            addStudentToFirestore({
+              email: userCredential.user.email,
+              token: userCredential.user.refreshToken,
+            })
+          )
+          .then((result) => {
+            store.dispatch(
+              saveUser({
+                email: userCredential.user.email,
+                uid: userCredential.user.uid,
+                token: userCredential.user.refreshToken,
+                id: result.payload.id,
+              })
+            );
+          });
       }
       toast.success("Sign in with Google successful");
       return userCredential.user;
@@ -140,7 +123,6 @@ export const useAuth = () => {
   };
 
   const signOutCall = async () => {
-    console.log("signing out");
     try {
       await signOut(auth);
       store.dispatch(removeUser());
@@ -167,7 +149,6 @@ export const useAuth = () => {
     try {
       //* update profile picture in storage
       const userProfileURL = await getDownloadURL(storageRef);
-      console.log("userProfileURL", userProfileURL);
       //* set photoURL in auth
       await updateProfile(auth.currentUser, {
         displayName: user.displayName,

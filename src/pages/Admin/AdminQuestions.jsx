@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export const AdminQuestions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const points = [1, 2, 3, 4, 5];
   const {
     isEdited,
     addMoreQuestionField,
@@ -34,7 +35,6 @@ export const AdminQuestions = () => {
   } = useExam();
 
   const saveExam = () => {
-    console.log("save exam");
     let result = {
       ...examData,
       questionsCount: examData.questions.length,
@@ -46,6 +46,11 @@ export const AdminQuestions = () => {
       dispatch(addExamToFirestore(result));
     }
     navigate("/admin/exams");
+  };
+
+  const handlePoints = (point, questionIndex) => {
+    console.log("point & questionIndex", point, questionIndex);
+    changeQuestionPoint(point, questionIndex);
   };
 
   const questionsUI = examData.questions.map((question, qIndex) => {
@@ -204,21 +209,14 @@ export const AdminQuestions = () => {
           {/* footer content */}
           <div className="flex justify-between">
             <Dropdown label="Bal seçin" size="xs" outline color="light">
-              <Dropdown.Item onClick={() => changeQuestionPoint(1, qIndex)}>
-                1 bal
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeQuestionPoint(2, qIndex)}>
-                2 bal
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeQuestionPoint(3, qIndex)}>
-                3 bal
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeQuestionPoint(4, qIndex)}>
-                4 bal
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeQuestionPoint(5, qIndex)}>
-                5 bal
-              </Dropdown.Item>
+              {points.map((point) => (
+                <Dropdown.Item
+                  key={point}
+                  onClick={() => handlePoints(point, qIndex)}
+                >
+                  {point}
+                </Dropdown.Item>
+              ))}
             </Dropdown>
             <div className="flex gap-2 items-center">
               <button
@@ -509,8 +507,8 @@ export const AdminQuestions = () => {
           <p className="text-[#30333D] font-bold mb-2 ms-2">İmtahan vaxtı</p>
           <label htmlFor="" className="relative">
             <input
-              type="text"
-              placeholder="1saat"
+              type="number"
+              placeholder="120"
               defaultValue={examData.time}
               onChange={(e) => {
                 setExamData({ ...examData, time: e.target.value });

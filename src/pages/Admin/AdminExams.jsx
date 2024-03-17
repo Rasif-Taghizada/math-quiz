@@ -74,7 +74,7 @@ export const AdminExams = () => {
                 <Table.Cell></Table.Cell>
                 <Table.Cell></Table.Cell>
                 <Table.Cell>{exam.date}</Table.Cell>
-                <Table.Cell>{exam.time}</Table.Cell>
+                <Table.Cell>{exam.time} dəqiqə</Table.Cell>
                 <Table.Cell className="flex items-center gap-4">
                   <button
                     className="block rounded-full bg-[#675AF0] text-white p-2 flex justify-center item-center"

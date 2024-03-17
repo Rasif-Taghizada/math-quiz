@@ -14,3 +14,5 @@ export * from "./Admin/AdminUsers";
 export * from "./Admin/AdminQuestions";
 export * from "./Admin/AdminSettings";
 export * from "./Admin/AdminExams";
+export * from "./Admin/AdminQuestions";
+export * from "./Main/ResultTable";

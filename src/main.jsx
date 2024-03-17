@@ -7,6 +7,7 @@ import { Spinner } from "flowbite-react";
 import { ToastContainer } from "react-toastify";
 import { auth } from "./config/firebase.js";
 import { createRoot } from "react-dom/client";
+import { fetchStudents } from "./redux/students/studentSlice.js";
 import { onAuthStateChanged } from "firebase/auth";
 import { saveUser } from "./redux/auth/authSlice.js";
 import { store } from "./redux/store.js";
@@ -37,8 +38,9 @@ root.render(
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    console.log("User is signed in");
-    //* find student by email
+    //* get students from firestore
+    await store.dispatch(fetchStudents());
+    //* find student by email from students array and save user to redux
     const students = store.getState().students.studentsArray;
     const currentStudent = students.find(
       (student) => student.email === user.email

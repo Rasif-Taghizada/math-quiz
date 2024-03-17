@@ -34,9 +34,7 @@ export const deleteExamFromFirestore = createAsyncThunk(
 export const addExamToFirestore = createAsyncThunk(
   "exams/addExamToFirestore",
   async (exam) => {
-    console.log("exam", exam);
     const docRef = await addDoc(collection(db, "exams"), exam);
-    console.log("Document written with ID: ", docRef.id);
     return { id: docRef.id, ...exam };
   }
 );

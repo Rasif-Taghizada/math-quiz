@@ -72,6 +72,7 @@ export const LoginPage = () => {
             signWithGoogle().then((user) => {
               if (user) {
                 navigate("/");
+                localStorage.setItem("role", "user");
               }
             });
           }}

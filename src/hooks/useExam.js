@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +12,7 @@ export const useExam = () => {
       title: "Exam Title",
       author: "Əliyar Nuriyev",
       price: 1,
-      time: "1saat 30dəqiqə",
+      time: 120,
       date: new Date().toISOString().split("T")[0],
       questions: [
         {
@@ -31,8 +32,6 @@ export const useExam = () => {
       ],
     }
   );
-
-  console.log("examData", examData);
 
   const changeQuestion = (text, index) => {
     let newQuestions = [...examData.questions];
@@ -67,7 +66,13 @@ export const useExam = () => {
   const removeOption = (optionID, quesIndex) => {
     let newQuestions = [...examData.questions];
     newQuestions[quesIndex].options = newQuestions[quesIndex].options.filter(
-      (option) => option.id !== optionID
+      (option) => {
+        if (option.id === newQuestions[quesIndex].correctID) {
+          toast.error("Düzgün cavab variantını silə bilməzsiniz!");
+          return true;
+        }
+        return option.id !== optionID;
+      }
     );
     setExamData({ ...examData, questions: newQuestions });
   };
@@ -109,7 +114,7 @@ export const useExam = () => {
       id: uuidv4(),
       questionTitle: "Question Title",
       questionType: "radio",
-      correctIndex: 0,
+      correctID: null,
       point: 1,
       options: [{ id: uuidv4().split("-")[0], title: "Option" }],
       open: true,
